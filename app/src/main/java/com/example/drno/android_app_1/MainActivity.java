@@ -1,6 +1,8 @@
 package com.example.drno.android_app_1;
 
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextView textView;
     private Button button;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView=(TextView) findViewById(R.id.textView);
+
+    //  Нажатие кнопки номер 2
 button=(Button) findViewById(R.id.button2);
 button.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -34,6 +38,7 @@ button.setOnClickListener(new View.OnClickListener() {
         textView.setText("Пока");
     }
 });
+
 
         temperaturelabel = (TextView) findViewById(R.id.myTemp);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -52,5 +57,27 @@ button.setOnClickListener(new View.OnClickListener() {
     }
 
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float ambient_temperature = event.values[0];
+        temperaturelabel.setText("Окружающая температура:\n " + String.valueOf(ambient_temperature) + getResources().getString(R.string.celsius));
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
 
 }
