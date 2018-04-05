@@ -12,8 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.*;
 import java.lang.Math;
 
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,12 +29,15 @@ import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 import static java.lang.Math.sqrt;
 
+import android.os.StrictMode;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+
 
     private TextView textView;
     private Button button;
 
-    private TextView temperaturelabel;
+    private TextView textView_HTTP;
 
     private Sensor mTemperature;
     private final static String NOT_SUPPORTED_MESSAGE = "Sorry, sensor not available for this device.";
@@ -69,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mLight;
     private Sensor mAccelerometer;
 
+    private String Send_http;
+
+    private final String USER_AGENT = "Mozilla/5.0";
+
 //    public MainActivity() {
 //    mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 //    mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -93,9 +106,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        if (android.os.Build.VERSION.SDK_INT > 9) {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//        }
+
 //        new MainActivity();
 
-//        textView=(TextView) findViewById(R.id.textView);
+        textView_HTTP =(TextView) findViewById(R.id.textView_HTTP);
 //
 //    //  Нажатие кнопки номер 2
 //button=(Button) findViewById(R.id.button2);
@@ -116,6 +134,55 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 System.exit(0);
             }
         });
+
+        textView=(TextView) findViewById(R.id.textView_HTTP);
+//        нажатие выход отправка по http
+//        button =(Button) findViewById(R.id.button_http);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                //
+//
+////                URL url = null;
+////                try {
+////                    url = new URL("http://www.android.com/");
+////                } catch (MalformedURLException e) {
+////                    e.printStackTrace();
+////                }
+////                HttpURLConnection urlConnection = null;
+////                try {
+////                    urlConnection = (HttpURLConnection) url.openConnection();
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                }
+//                String url = "http://www.google.com/search?q=mkyong";
+//                url="http://31.220.63.13:5005/accelerometer";
+//                textView.setText("начал");
+//                try {
+//                    String message = (String) sendGet(url);
+//
+//                    textView.setText(message);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+////                    textView.setText();
+//
+//                }
+//
+//
+////                try {
+////                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+////                    textView.setText("http");
+//////                    readStream(in);
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                } finally {
+////                    urlConnection.disconnect();
+////                }
+//
+//
+//            }
+//        });
+
 
 //        нажатие старт измерений
         button =(Button) findViewById(R.id.button_start);
@@ -162,8 +229,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    public void sayHello(View view){
-        textView.setText("Привет!");
+    public void sayHello(View view) throws IOException {
+        textView_HTTP.setText("Текст должен быть изменен");
+        TextView textv = (TextView)findViewById(R.id.textView_HTTP);
+        String url="http://31.220.63.13:5005/accelerometer";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+        con.setRequestProperty("User-Agent", USER_AGENT);
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        System.out.println(response.toString());
+        textView_HTTP.setText(response.toString());
+
     }
 
     private void getRandomNumber() {
@@ -181,15 +274,47 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    // HTTP GET request
+    private String sendGet(String URL) throws Exception {
+
+        URL obj = new URL(URL);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+        con.setRequestProperty("User-Agent", USER_AGENT);
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + URL);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+//        System.out.println(response.toString());
+           return(response.toString());
+    }
+
+
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
 
-        if (mySensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
-            float ambient_temperature = sensorEvent.values[0];
-            temperaturelabel.setText("Окружающая температура:\n " + String.valueOf(ambient_temperature) + getResources().getString(R.string.celsius));
-        }
+//        if (mySensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+//            float ambient_temperature = sensorEvent.values[0];
+//            temperaturelabel.setText("Окружающая температура:\n " + String.valueOf(ambient_temperature) + getResources().getString(R.string.celsius));
+//        }
 
         if (mySensor.getType() == Sensor.TYPE_GYROSCOPE) {
 //            float ambient_temperature = sensorEvent.values[0];

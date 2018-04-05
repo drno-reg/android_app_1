@@ -3,7 +3,7 @@
     <string name="btn_start">Старт</string>
     <string name="btn_stop">Стоп</string>
     <string name="btn_exit">Банан</string>
-    <string name="btn_text4">Accelerometer</string>
+    <string name="btn_http">HTTP</string>
     <string name="text_ACCELEROMETER">Измерения акселерометра</string>
     <string name="text_GYROSCOPE">Измерения гироскопа</string>
     <!--<string name="app_name">Ambient Temperature by Jorgesys</string>-->
