@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">Сенсор</string>
-    <string name="btn_text">Привет</string>
-    <string name="btn_text2">Пока</string>
-    <string name="btn_text3">&#176;C</string>
-    <string name="Hello_world">Hello world!!!</string>
-
+    <string name="app_name">GorillaFell</string>
+    <string name="btn_start">Старт</string>
+    <string name="btn_stop">Стоп</string>
+    <string name="btn_exit">Банан</string>
+    <string name="btn_text4">Accelerometer</string>
+    <string name="text_ACCELEROMETER">Измерения акселерометра</string>
+    <string name="text_GYROSCOPE">Измерения гироскопа</string>
     <!--<string name="app_name">Ambient Temperature by Jorgesys</string>-->
     <string name="hello_world">Начинаем!</string>
     <string name="action_settings">Settings</string>
