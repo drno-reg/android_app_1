@@ -4,6 +4,8 @@
     <string name="btn_stop">Стоп</string>
     <string name="btn_exit">Банан</string>
     <string name="btn_http">HTTP</string>
+    <string name="btn_async_task">AsyncTask</string>
+
     <string name="text_ACCELEROMETER">Измерения акселерометра</string>
     <string name="text_GYROSCOPE">Измерения гироскопа</string>
     <!--<string name="app_name">Ambient Temperature by Jorgesys</string>-->

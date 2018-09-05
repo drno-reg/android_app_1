@@ -58,4 +58,18 @@
             android:id="@+id/textView_HTTP" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/button_http" android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"/>
+    <Button
+            android:text="@string/btn_async_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_async_task" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Gyroscope"
+            app:layout_constraintLeft_toRightOf="@+id/button_http" android:layout_marginLeft="8dp"
+            android:onClick="onclick_async_task"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_async_task" app:layout_constraintLeft_toLeftOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView_HTTP"/>
 </android.support.constraint.ConstraintLayout>
